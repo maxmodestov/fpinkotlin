@@ -16,3 +16,12 @@ val compose = { x: (Int) -> Int -> { y: (Int) -> Int -> { z: Int -> x(y(z)) } } 
 // Define a value function composing two (Int) -> Int functions
 fun <T, U, V> higherCompose(): ((U) -> T) -> ((V) -> U) -> (V) -> T = { f -> { g -> { x -> f(g(x)) } } }
 
+fun <T, U, V> higherCompose2(): ((U) -> V) -> ((T) -> U) -> (T) -> V = { f -> { g -> { x -> f(g(x)) } } }
+
+fun <T, U, V> higherComposer() = { f: (U) -> V ->
+    { g: (T) -> U ->
+        { x: T -> f(g(x)) }
+    }
+}
+
+val squareOfTriple = higherComposer<Int, Int, Int>()(::square)(::triple)

@@ -14,6 +14,12 @@ class FunctionsTest : StringSpec() {
                 higherCompose<Int, Int, Int>()(::square)(::triple)(x) == square(triple(x))
             }
         }
+
+        "squareOfTriple" {
+            forAll { x: Int ->
+                squareOfTriple(x) == square(triple(x))
+            }
+        }
     }
 }
 
