@@ -7,8 +7,15 @@ fun square(n: Int) = n * n
 
 fun triple(n: Int) = n * 3
 
-fun <T, U, V> compose(f: (U) -> V, g: (T) -> U): (T) -> V = { f(g(it)) }
+//fun <T, U, V> compose(f: (U) -> V, g: (T) -> U): (T) -> V = { f(g(it)) }
 
-val add: (Int) -> (Int) -> Int = { a -> { b -> a + b} }
+typealias IntUnaryOp = (Int) -> Int
 
-val compose = null // Define a value function composing two (Int) -> Int functions
+val add: (Int) -> (Int) -> Int = { a -> { b -> a + b } }
+
+// Define a value function composing two (Int) -> Int functions
+val compose: (IntUnaryOp) -> (IntUnaryOp) -> IntUnaryOp = { a -> { b -> { x -> a(b(x)) } } }
+
+val squareVal: (Int) -> Int = { it * it }
+val tripleVal: (Int) -> Int = {it*3}
+val squareOfTriple = compose(squareVal)(tripleVal)
