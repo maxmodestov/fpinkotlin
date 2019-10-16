@@ -1,6 +1,7 @@
 package com.fpinkotlin.recursion.exercise05
 
 import com.fpinkotlin.generators.CharKListGenerator
+import io.kotlintest.properties.Gen
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
@@ -20,6 +21,15 @@ class FoldTest : StringSpec() {
         "sum" {
             forAll { list: List<Int> ->
                 sum(list) == list.toIntArray().fold(0) { s, c -> s + c}
+            }
+        }
+    }
+
+    init {
+
+        "makeString" {
+            forAll(Gen.list(Gen.string())) {list: List<String> ->
+                makeString(list, ",") == list.joinToString(",")
             }
         }
     }

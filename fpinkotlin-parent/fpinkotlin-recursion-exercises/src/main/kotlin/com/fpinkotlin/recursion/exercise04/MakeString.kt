@@ -1,7 +1,13 @@
 package com.fpinkotlin.recursion.exercise04
 
 fun <T> makeString(list: List<T>, delim: String): String {
-    TODO("makeString")
+    tailrec fun makeString(res: String, values: List<T>): String =
+            when {
+                values.isEmpty() -> res
+                res.isEmpty() -> makeString("${list.head()}", list.tail())
+                else -> makeString("$res$delim${values.head()}", values.tail())
+            }
+    return makeString("", list)
 }
 
 fun <T> List<T>.head(): T =
