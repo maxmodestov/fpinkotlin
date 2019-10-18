@@ -1,5 +1,7 @@
 package com.fpinkotlin.recursion.exercise18
 
+import java.math.BigInteger
+
 
 fun <T> List<T>.head(): T =
     if (this.isEmpty())
@@ -42,4 +44,32 @@ fun <T> makeString(list: List<T>, separator: String): String =
             foldLeft(list.tail(), "") { x, y -> x + separator + y}
     }
 
-fun fiboCorecursive(number: Int): String = TODO("fiboCorecursive")
+fun fiboCorecursive(number: Int): String =
+        makeString(map(iterate(
+                Pair(BigInteger.ONE, BigInteger.ZERO),
+                {Pair(it.first + it.second, it.first)},
+                number)) {it.first}, ", ")
+
+
+fun fiboCorecursiveBook(number: Int): String {
+    val seed = Pair(BigInteger.ZERO, BigInteger.ONE)
+    val f = { x: Pair<BigInteger, BigInteger> -> Pair(x.second, x.first + x.second) }
+    val listOfPairs = iterate(seed, f, number)
+    val list = map(listOfPairs) { p -> p.second }
+    return makeString(list, ", ")
+}
+
+
+fun fibo(number: Int): String {
+    tailrec fun fibo(acc: List<BigInteger>, acc1: BigInteger,
+                     acc2: BigInteger, x: BigInteger): List<BigInteger> =
+            when (x) {
+                BigInteger.ZERO -> acc
+                BigInteger.ONE -> acc + (acc1 + acc2)
+                else -> fibo(acc + (acc1 + acc2), acc2, acc1 + acc2,
+                        x - BigInteger.ONE)
+            }
+    val list = fibo(listOf(),
+            BigInteger.ONE, BigInteger.ZERO, BigInteger.valueOf(number.toLong()))
+    return makeString(list, ", ")
+}
