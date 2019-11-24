@@ -6,7 +6,10 @@ sealed class List<A> {
 
     fun cons(a: A): List<A>  = Cons(a, this)
 
-    fun setHead(a: A): List<A> = TODO("setHead")
+    fun setHead(a: A): List<A> = when(this) {
+        Nil -> throw IllegalStateException("setHead called on an empty list")
+        is Cons -> Cons(a, tail)
+    }
 
     private object Nil: List<Nothing>() {
 
