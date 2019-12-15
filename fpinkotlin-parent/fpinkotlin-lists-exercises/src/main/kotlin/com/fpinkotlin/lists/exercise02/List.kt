@@ -8,7 +8,7 @@ sealed class List<A> {
 
     fun setHead(a: A): List<A> = when(this) {
         Nil -> throw IllegalStateException("setHead called on an empty list")
-        is Cons -> Cons(a, tail)
+        is Cons -> tail.cons(a)
     }
 
     private object Nil: List<Nothing>() {
