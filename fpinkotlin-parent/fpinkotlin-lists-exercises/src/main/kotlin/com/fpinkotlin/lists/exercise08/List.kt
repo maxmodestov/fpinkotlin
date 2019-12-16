@@ -24,7 +24,7 @@ sealed class List<out A> {
 
     fun <B> foldRight(identity: B, f: (A) -> (B) -> B): B = foldRight(this, identity, f)
 
-    fun length(): Int = TODO("length")
+    fun length(): Int = foldRight(0) { { it + 1 } }
 
     internal object Nil: List<Nothing>() {
 
