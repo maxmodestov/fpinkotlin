@@ -24,7 +24,13 @@ sealed class List<out A> {
 
     fun <B> foldRight(identity: B, f: (A) -> (B) -> B): B = foldRight(this, identity, f)
 
-    fun <B> foldLeft(identity: B, f: (B) -> (A) -> B): B = TODO("foldLeft")
+    fun <B> foldLeft(identity: B, f: (B) -> (A) -> B): B {
+        tailrec fun foldLeft(list: List<A>, acc: B): B = when (list) {
+            Nil -> acc
+            is Cons -> foldLeft(list.tail, f(acc)(list.head))
+        }
+        return foldLeft(this, identity)
+    }
 
     fun length(): Int = foldRight(0) { { it + 1} }
 

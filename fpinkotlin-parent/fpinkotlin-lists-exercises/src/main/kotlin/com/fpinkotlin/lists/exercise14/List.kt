@@ -74,7 +74,8 @@ sealed class List<out A> {
 
         fun <A> concat(list1: List<A>, list2: List<A>): List<A> = list1.reverse().foldLeft(list2) { x -> x::cons }
 
-        fun <A> concatViaFoldRight(list1: List<A>, list2: List<A>): List<A> = TODO("concatViaFoldRight")
+        fun <A> concatViaFoldRight(list1: List<A>, list2: List<A>): List<A>
+                = foldRight(list1, list2) {{acc -> acc.cons(it)}}
 
         fun <A, B> foldRight(list: List<A>, identity: B, f: (A) -> (B) -> B): B =
                 when (list) {

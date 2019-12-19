@@ -31,7 +31,7 @@ sealed class List<out A> {
     fun <B> foldRightViaFoldLeft(identity: B, f: (A) -> (B) -> B): B =
             this.reverse().foldLeft(identity) { x -> { y -> f(y)(x) } }
 
-    fun <B> coFoldRight(identity: B, f: (A) -> (B) -> B): B = TODO("coFoldRight")
+    fun <B> coFoldRight(identity: B, f: (A) -> (B) -> B): B = cofoldRight(identity, reverse(), f)
 
     internal object Nil: List<Nothing>() {
 
@@ -95,6 +95,11 @@ sealed class List<out A> {
 
         operator fun <A> invoke(vararg az: A): List<A> =
                 az.foldRight(Nil) { a: A, list: List<A> -> Cons(a, list) }
+
+        private tailrec fun <A, B> cofoldRight(acc: B, list: List<A>, f: (A) -> (B) -> B): B = when (list) {
+            Nil -> acc
+            is Cons -> cofoldRight(f(list.head)(acc), list.tail, f)
+        }
     }
 }
 

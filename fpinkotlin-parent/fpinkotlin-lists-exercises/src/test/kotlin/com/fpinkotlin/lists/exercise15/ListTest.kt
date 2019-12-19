@@ -2,6 +2,7 @@ package com.fpinkotlin.lists.exercise15
 
 
 import com.fpinkotlin.lists.exercise15.List.Companion.flatten
+import com.fpinkotlin.lists.exercise15.List.Companion.flattenLeft
 import io.kotlintest.properties.Gen
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
@@ -16,6 +17,14 @@ class ListTest: StringSpec() {
                 val sum1 = list.foldLeft("") { x -> { y -> x + y.foldLeft("") { a -> { b -> a + b } } } }
                 val sum2 = flatten(list).foldLeft("") { a -> { b -> a + b } }
                 sum1 == sum2
+            }
+        }
+
+        "flatten left" {
+            forAll(100, IntListListGenerator()) { list ->
+                val sumRight = flatten(list).foldLeft("") { a -> { b -> a + b } }
+                val sumLeft = flattenLeft(list).foldLeft("") { a -> { b -> a + b } }
+                sumLeft == sumRight
             }
         }
     }
